@@ -53,6 +53,14 @@ async function fetchStandings() {
 
         standings.forEach(item => {
             const row = document.createElement('tr');
+            
+            // Add custom podium highlight classes for top 3
+            let podiumClass = '';
+            if (item.position === '1') podiumClass = 'podium-1';
+            else if (item.position === '2') podiumClass = 'podium-2';
+            else if (item.position === '3') podiumClass = 'podium-3';
+
+            row.className = podiumClass;
             row.innerHTML = `
                 <td><strong>${item.position}</strong></td>
                 <td>
