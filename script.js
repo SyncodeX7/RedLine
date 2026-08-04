@@ -1,5 +1,6 @@
 const JOLPICA_BASE = 'https://api.jolpi.ca/ergast/f1';
 
+
 // 1. Fetch Schedule and Setup Countdown
 async function fetchNextRace() {
     try {
