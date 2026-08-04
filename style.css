@@ -173,6 +173,43 @@ h2 {
     margin-bottom: 1rem;
 }
 
+/* NEW FEATURE: Track Conditions Widget */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.stat-box {
+    background: #111117;
+    padding: 0.75rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--f1-border);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--f1-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--f1-text);
+    margin-top: 0.2rem;
+}
+
 /* Feed items (News/Quick Updates) */
 .feed-item {
     padding: 1.25rem 0;
@@ -255,6 +292,17 @@ tr:hover {
     font-size: 0.75rem; 
     color: var(--f1-gray);
     margin-left: 4px;
+}
+
+/* Podium highlight styling */
+.podium-1 {
+    border-left: 3px solid #ffd700;
+}
+.podium-2 {
+    border-left: 3px solid #c0c0c0;
+}
+.podium-3 {
+    border-left: 3px solid #cd7f32;
 }
 
 .loading {
