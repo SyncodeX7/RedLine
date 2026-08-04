@@ -6,7 +6,6 @@
     --f1-border: #2c2c3e;
     --f1-text: #f3f3f6;
     --f1-gray: #94949b;
-    --transition: all 0.3s ease;
 }
 
 * {
@@ -23,7 +22,6 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Header / Navbar */
 header {
     background: linear-gradient(90deg, #07070a 0%, #181822 100%);
     border-bottom: 3px solid var(--f1-red);
@@ -35,6 +33,7 @@ header {
     top: 0;
     z-index: 100;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    transition: border-bottom-color 0.3s ease;
 }
 
 .logo {
@@ -47,6 +46,7 @@ header {
 
 .logo span {
     color: var(--f1-red);
+    transition: color 0.3s ease;
 }
 
 .header-meta {
@@ -55,28 +55,33 @@ header {
     gap: 1.25rem;
 }
 
-/* Feature 6: Theme Switcher Styles */
+/* Theme Switcher Styles */
 .theme-switcher {
     display: flex;
     gap: 6px;
+    background: #111117;
+    padding: 6px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--f1-border);
 }
 
 .theme-btn {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     cursor: pointer;
-    transition: var(--transition);
+    transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-.theme-btn:nth-child(1) { background-color: #e10600; }
-.theme-btn:nth-child(2) { background-color: #ff8000; }
-.theme-btn:nth-child(3) { background-color: #00d2be; }
-.theme-btn:nth-child(4) { background-color: #229954; }
+/* Hardcoded explicit background colors so dots always render correctly */
+.theme-btn:nth-child(1) { background-color: #e10600 !important; }
+.theme-btn:nth-child(2) { background-color: #ff8000 !important; }
+.theme-btn:nth-child(3) { background-color: #00d2be !important; }
+.theme-btn:nth-child(4) { background-color: #229954 !important; }
 
 .theme-btn:hover {
-    transform: scale(1.2);
+    transform: scale(1.25);
     border-color: #fff;
 }
 
@@ -92,6 +97,7 @@ header {
     display: flex;
     align-items: center;
     gap: 6px;
+    transition: background-color 0.3s ease;
 }
 
 .live-badge::before {
@@ -110,7 +116,6 @@ header {
     100% { transform: scale(0.95); opacity: 1; }
 }
 
-/* Main Container Layout */
 .container {
     max-width: 1300px;
     margin: 2.5rem auto;
@@ -126,7 +131,6 @@ header {
     }
 }
 
-/* Card Styles */
 .card {
     background-color: var(--f1-card-bg);
     border: 1px solid var(--f1-border);
@@ -134,11 +138,11 @@ header {
     padding: 1.75rem;
     margin-bottom: 1.75rem;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-    transition: var(--transition);
+    transition: border-color 0.3s ease;
 }
 
 .card:hover {
-    border-color: rgba(225, 6, 0, 0.4);
+    border-color: var(--f1-red);
 }
 
 h2 {
@@ -149,9 +153,9 @@ h2 {
     border-left: 4px solid var(--f1-red);
     padding-left: 0.75rem;
     color: var(--f1-text);
+    transition: border-left-color 0.3s ease;
 }
 
-/* Countdown Widget */
 .countdown-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -175,6 +179,7 @@ h2 {
     font-weight: 900;
     color: var(--f1-red);
     line-height: 1.1;
+    transition: color 0.3s ease;
 }
 
 .time-label {
@@ -198,7 +203,6 @@ h2 {
     margin-bottom: 1rem;
 }
 
-/* Graphical Circuit Map & Track Tracker Styles */
 .circuit-container {
     background: #111117;
     border-radius: 8px;
@@ -213,21 +217,38 @@ h2 {
 }
 
 .track-car {
-    animation: moveCar 8s infinite linear;
-    filter: drop-shadow(0 0 4px #fff);
+    animation-duration: 9s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    filter: drop-shadow(0 0 6px rgba(255,255,255,0.6));
 }
 
-.track-car.leader { fill: #ffd700; }
-.track-car.challenger { fill: var(--f1-red); animation-delay: -2s; }
-.track-car.pack { fill: #00d2be; animation-delay: -4s; }
+.track-car.leader { fill: #ffd700; animation-name: raceTrackAnim1; }
+.track-car.challenger { fill: var(--f1-red); animation-name: raceTrackAnim2; animation-delay: -3s; }
+.track-car.pack { fill: #00d2be; animation-name: raceTrackAnim3; animation-delay: -5.5s; }
 
-@keyframes moveCar {
-    0% { offset-distance: 0%; }
-    100% { offset-distance: 100%; }
+@keyframes raceTrackAnim1 {
+    0% { transform: translate(60px, 125px); }
+    25% { transform: translate(280px, 50px); }
+    50% { transform: translate(440px, 125px); }
+    75% { transform: translate(280px, 190px); }
+    100% { transform: translate(60px, 125px); }
 }
 
-.track-svg path {
-    offset-path: path("M 60,125 C 60,40 180,30 250,50 C 320,70 440,50 440,125 C 440,200 320,210 250,190 C 180,170 60,210 60,125 Z");
+@keyframes raceTrackAnim2 {
+    0% { transform: translate(120px, 100px); }
+    25% { transform: translate(330px, 45px); }
+    50% { transform: translate(400px, 150px); }
+    75% { transform: translate(220px, 180px); }
+    100% { transform: translate(120px, 100px); }
+}
+
+@keyframes raceTrackAnim3 {
+    0% { transform: translate(180px, 160px); }
+    25% { transform: translate(230px, 60px); }
+    50% { transform: translate(360px, 100px); }
+    75% { transform: translate(140px, 200px); }
+    100% { transform: translate(180px, 160px); }
 }
 
 .circuit-stats-row {
@@ -244,12 +265,13 @@ h2 {
     color: var(--f1-text);
 }
 
-/* Standings Header & Toggle */
 .standings-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
 }
 
 .standings-header h2 {
@@ -257,35 +279,54 @@ h2 {
     border-left: 4px solid var(--f1-red);
 }
 
-.standings-toggle {
+.standings-switcher-pill {
+    position: relative;
     display: flex;
     background: #111117;
-    border-radius: 4px;
+    border-radius: 30px;
     border: 1px solid var(--f1-border);
-    padding: 2px;
+    padding: 3px;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
 }
 
-.toggle-btn {
+.pill-btn {
+    position: relative;
+    z-index: 2;
     background: transparent;
     border: none;
     color: var(--f1-gray);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    padding: 0.3rem 0.6rem;
+    letter-spacing: 0.5px;
+    padding: 0.4rem 1rem;
     cursor: pointer;
-    border-radius: 3px;
-    transition: var(--transition);
+    border-radius: 30px;
+    transition: color 0.3s ease;
 }
 
-.toggle-btn.active {
-    background: var(--f1-red);
+.pill-btn.active {
     color: white;
 }
 
-/* Feed items & History */
-.feed-item, .history-content {
-    padding: 0.5rem 0;
+.switcher-slider {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: calc(50% - 3px);
+    height: calc(100% - 6px);
+    background: var(--f1-red);
+    border-radius: 30px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+    box-shadow: 0 0 12px rgba(225, 6, 0, 0.5);
+}
+
+.standings-switcher-pill.right-active .switcher-slider {
+    transform: translateX(100%);
+}
+
+.history-content {
+    padding: 0.25rem 0;
 }
 
 .feed-tag {
@@ -311,7 +352,6 @@ h2 {
     line-height: 1.5;
 }
 
-/* Tables */
 .table-responsive {
     width: 100%;
     overflow-x: auto;
