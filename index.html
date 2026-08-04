@@ -12,14 +12,14 @@
 <body>
 
     <header>
-        <div class="logo">F1<span>PULSE</span></div>
+        <div class="logo">RED<span>LINE</span></div>
         <div class="header-meta">
-            <div class="live-badge">Live API Feed</div>
+            <div class="live-badge">Live</div>
         </div>
     </header>
 
     <div class="container">
-        <!-- Left Column: News Feed & Countdown -->
+        <!-- Left Column: News Feed, Countdown & Circuit Stats -->
         <div class="column-left">
             <!-- Countdown Card -->
             <div class="card">
@@ -31,6 +31,29 @@
                     <div class="time-box"><span id="hours" class="time-value">--</span><span class="time-label">Hours</span></div>
                     <div class="time-box"><span id="mins" class="time-value">--</span><span class="time-label">Mins</span></div>
                     <div class="time-box"><span id="secs" class="time-value">--</span><span class="time-label">Secs</span></div>
+                </div>
+            </div>
+
+            <!-- NEW FEATURE: Circuit & Weather Quick Panel -->
+            <div class="card">
+                <h2>Circuit & Track Conditions</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-label">Track Temp</span>
+                        <span class="stat-value" id="track-temp">32°C</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Air Temp</span>
+                        <span class="stat-value" id="air-temp">24°C</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Humidity</span>
+                        <span class="stat-value" id="humidity">58%</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Weather</span>
+                        <span class="stat-value" id="weather-cond">Clear / Dry</span>
+                    </div>
                 </div>
             </div>
 
@@ -76,12 +99,10 @@
     </div>
 
     <footer>
-        <p>&copy; F1Pulse Dashboard. Powered by the Jolpica F1 API.</p>
+        <p>&copy; RedLine Dashboard. Powered by the Jolpica F1 API.</p>
     </footer>
 
-
-    
-    <!-- JavaScript -->
+    <!-- Custom JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
