@@ -44,12 +44,10 @@ async function fetchNextRace() {
 // 2. Fetch Standings (Drivers & Constructors)
 async function fetchAllStandings() {
     try {
-        // Fetch Driver Standings
         const driverRes = await fetch(`${JOLPICA_BASE}/current/driverstandings.json`);
         const driverData = await driverRes.json();
         driverStandingsCache = driverData.MRData.StandingsTable.StandingsLists[0].DriverStandings;
 
-        // Fetch Constructor Standings
         const constructorRes = await fetch(`${JOLPICA_BASE}/current/constructorstandings.json`);
         const constructorData = await constructorRes.json();
         constructorStandingsCache = constructorData.MRData.StandingsTable.StandingsLists[0].ConstructorStandings;
@@ -109,33 +107,38 @@ function renderConstructorStandings() {
     });
 }
 
-// Toggle between Drivers and Constructors view
+// Standings Switcher Pill Logic
 function switchStandingsType(type) {
     const btnDrivers = document.getElementById('btn-drivers');
     const btnConstructors = document.getElementById('btn-constructors');
     const tableDrivers = document.getElementById('drivers-table');
     const tableConstructors = document.getElementById('constructors-table');
+    const pillContainer = document.querySelector('.standings-switcher-pill');
 
     if (type === 'drivers') {
         btnDrivers.classList.add('active');
         btnConstructors.classList.remove('active');
+        pillContainer.classList.remove('right-active');
         tableDrivers.style.display = 'table';
         tableConstructors.style.display = 'none';
         renderDriverStandings();
     } else {
         btnConstructors.classList.add('active');
         btnDrivers.classList.remove('active');
+        pillContainer.classList.add('right-active');
         tableConstructors.style.display = 'table';
         tableDrivers.style.display = 'none';
         renderConstructorStandings();
     }
 }
 
-// 6. Theme Accent Switcher Logic
+// Theme Accent Switcher Logic
 document.querySelectorAll('.theme-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         const color = e.target.getAttribute('data-color');
-        document.documentElement.style.setProperty('--f1-red', color);
+        if (color) {
+            document.documentElement.style.setProperty('--f1-red', color);
+        }
     });
 });
 
