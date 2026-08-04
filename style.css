@@ -23,7 +23,6 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-
 /* Header / Navbar */
 header {
     background: linear-gradient(90deg, #07070a 0%, #181822 100%);
@@ -53,7 +52,32 @@ header {
 .header-meta {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.25rem;
+}
+
+/* Feature 6: Theme Switcher Styles */
+.theme-switcher {
+    display: flex;
+    gap: 6px;
+}
+
+.theme-btn {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.theme-btn:nth-child(1) { background-color: #e10600; }
+.theme-btn:nth-child(2) { background-color: #ff8000; }
+.theme-btn:nth-child(3) { background-color: #00d2be; }
+.theme-btn:nth-child(4) { background-color: #229954; }
+
+.theme-btn:hover {
+    transform: scale(1.2);
+    border-color: #fff;
 }
 
 .live-badge {
@@ -174,56 +198,94 @@ h2 {
     margin-bottom: 1rem;
 }
 
-/* NEW FEATURE: Track Conditions Widget */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
+/* Graphical Circuit Map & Track Tracker Styles */
+.circuit-container {
+    background: #111117;
+    border-radius: 8px;
+    border: 1px solid var(--f1-border);
+    padding: 1rem;
     text-align: center;
 }
 
-@media (max-width: 600px) {
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.track-svg {
+    width: 100%;
+    max-height: 180px;
 }
 
-.stat-box {
-    background: #111117;
-    padding: 0.75rem 0.5rem;
-    border-radius: 6px;
-    border: 1px solid var(--f1-border);
+.track-car {
+    animation: moveCar 8s infinite linear;
+    filter: drop-shadow(0 0 4px #fff);
 }
 
-.stat-label {
-    display: block;
-    font-size: 0.7rem;
+.track-car.leader { fill: #ffd700; }
+.track-car.challenger { fill: var(--f1-red); animation-delay: -2s; }
+.track-car.pack { fill: #00d2be; animation-delay: -4s; }
+
+@keyframes moveCar {
+    0% { offset-distance: 0%; }
+    100% { offset-distance: 100%; }
+}
+
+.track-svg path {
+    offset-path: path("M 60,125 C 60,40 180,30 250,50 C 320,70 440,50 440,125 C 440,200 320,210 250,190 C 180,170 60,210 60,125 Z");
+}
+
+.circuit-stats-row {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+    font-size: 0.85rem;
     color: var(--f1-gray);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    border-top: 1px solid var(--f1-border);
+    padding-top: 0.75rem;
 }
 
-.stat-value {
-    display: block;
-    font-size: 1.05rem;
-    font-weight: 700;
+.circuit-stats-row strong {
     color: var(--f1-text);
-    margin-top: 0.2rem;
 }
 
-/* Feed items (News/Quick Updates) */
-.feed-item {
-    padding: 1.25rem 0;
-    border-bottom: 1px solid var(--f1-border);
+/* Standings Header & Toggle */
+.standings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
 }
 
-.feed-item:first-child {
-    padding-top: 0.25rem;
+.standings-header h2 {
+    margin-bottom: 0;
+    border-left: 4px solid var(--f1-red);
 }
 
-.feed-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+.standings-toggle {
+    display: flex;
+    background: #111117;
+    border-radius: 4px;
+    border: 1px solid var(--f1-border);
+    padding: 2px;
+}
+
+.toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--f1-gray);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: var(--transition);
+}
+
+.toggle-btn.active {
+    background: var(--f1-red);
+    color: white;
+}
+
+/* Feed items & History */
+.feed-item, .history-content {
+    padding: 0.5rem 0;
 }
 
 .feed-tag {
@@ -234,13 +296,12 @@ h2 {
     border-radius: 4px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .feed-title {
     font-size: 1.05rem;
     font-weight: 700;
-    margin: 0.5rem 0 0.35rem 0;
+    margin: 0.4rem 0 0.25rem 0;
     color: var(--f1-text);
 }
 
@@ -250,7 +311,7 @@ h2 {
     line-height: 1.5;
 }
 
-/* Standings Table */
+/* Tables */
 .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -264,7 +325,7 @@ table {
 }
 
 th, td {
-    padding: 0.85rem 0.75rem;
+    padding: 0.75rem;
     text-align: left;
     border-bottom: 1px solid var(--f1-border);
 }
@@ -277,34 +338,16 @@ th {
     background: rgba(0, 0, 0, 0.1);
 }
 
-tr {
-    transition: var(--transition);
-}
-
 tr:hover {
     background-color: rgba(255, 255, 255, 0.03);
 }
 
-.driver-name {
-    font-weight: 600;
-}
+.driver-name { font-weight: 600; }
+.constructor-name { font-size: 0.75rem; color: var(--f1-gray); margin-left: 4px; }
 
-.constructor-name {
-    font-size: 0.75rem; 
-    color: var(--f1-gray);
-    margin-left: 4px;
-}
-
-/* Podium highlight styling */
-.podium-1 {
-    border-left: 3px solid #ffd700;
-}
-.podium-2 {
-    border-left: 3px solid #c0c0c0;
-}
-.podium-3 {
-    border-left: 3px solid #cd7f32;
-}
+.podium-1 { border-left: 3px solid #ffd700; }
+.podium-2 { border-left: 3px solid #c0c0c0; }
+.podium-3 { border-left: 3px solid #cd7f32; }
 
 .loading {
     color: var(--f1-gray);
@@ -314,7 +357,6 @@ tr:hover {
     padding: 2rem 0;
 }
 
-/* Footer info */
 footer {
     text-align: center;
     padding: 2rem;
