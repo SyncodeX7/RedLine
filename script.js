@@ -1,5 +1,6 @@
 const JOLPICA_BASE = 'https://api.jolpi.ca/ergast/f1';
-
+let driverStandingsCache = [];
+let constructorStandingsCache = [];
 
 // 1. Fetch Schedule and Setup Countdown
 async function fetchNextRace() {
@@ -11,7 +12,6 @@ async function fetchNextRace() {
         const now = new Date();
         let nextRace = races.find(r => new Date(`${r.date}T${r.time || '00:00:00Z'}`) > now);
         
-        // Fallback to the final race if the season has concluded
         if (!nextRace && races.length > 0) {
             nextRace = races[races.length - 1]; 
         }
@@ -22,7 +22,6 @@ async function fetchNextRace() {
             
             const raceDate = new Date(`${nextRace.date}T${nextRace.time || '14:00:00Z'}`).getTime();
             
-            // Run countdown loop
             setInterval(() => {
                 const timeLeft = raceDate - new Date().getTime();
                 if (timeLeft > 0) {
@@ -42,45 +41,104 @@ async function fetchNextRace() {
     }
 }
 
-// 2. Fetch Driver Standings from Jolpica
-async function fetchStandings() {
+// 2. Fetch Standings (Drivers & Constructors)
+async function fetchAllStandings() {
     try {
-        const response = await fetch(`${JOLPICA_BASE}/current/driverstandings.json`);
-        const data = await response.json();
-        const standings = data.MRData.StandingsTable.StandingsLists[0].DriverStandings;
-        
-        const tbody = document.getElementById('standings-body');
-        tbody.innerHTML = '';
+        // Fetch Driver Standings
+        const driverRes = await fetch(`${JOLPICA_BASE}/current/driverstandings.json`);
+        const driverData = await driverRes.json();
+        driverStandingsCache = driverData.MRData.StandingsTable.StandingsLists[0].DriverStandings;
 
-        standings.forEach(item => {
-            const row = document.createElement('tr');
-            
-            // Add custom podium highlight classes for top 3
-            let podiumClass = '';
-            if (item.position === '1') podiumClass = 'podium-1';
-            else if (item.position === '2') podiumClass = 'podium-2';
-            else if (item.position === '3') podiumClass = 'podium-3';
+        // Fetch Constructor Standings
+        const constructorRes = await fetch(`${JOLPICA_BASE}/current/constructorstandings.json`);
+        const constructorData = await constructorRes.json();
+        constructorStandingsCache = constructorData.MRData.StandingsTable.StandingsLists[0].ConstructorStandings;
 
-            row.className = podiumClass;
-            row.innerHTML = `
-                <td><strong>${item.position}</strong></td>
-                <td>
-                    <span class="driver-name">${item.Driver.givenName} ${item.Driver.familyName}</span>
-                    <span class="constructor-name">(${item.Constructors[0].name})</span>
-                </td>
-                <td style="text-align: right;"><strong>${item.points}</strong></td>
-            `;
-            tbody.appendChild(row);
-        });
+        renderDriverStandings();
 
         document.getElementById('standings-loading').style.display = 'none';
-        document.getElementById('standings-table').style.display = 'table';
+        document.getElementById('drivers-table').style.display = 'table';
     } catch (error) {
         console.error("Error fetching standings:", error);
         document.getElementById('standings-loading').innerText = "Failed to load live standings.";
     }
 }
 
-// Initialize App calls
+function renderDriverStandings() {
+    const tbody = document.getElementById('drivers-body');
+    tbody.innerHTML = '';
+
+    driverStandingsCache.forEach(item => {
+        const row = document.createElement('tr');
+        let podiumClass = '';
+        if (item.position === '1') podiumClass = 'podium-1';
+        else if (item.position === '2') podiumClass = 'podium-2';
+        else if (item.position === '3') podiumClass = 'podium-3';
+
+        row.className = podiumClass;
+        row.innerHTML = `
+            <td><strong>${item.position}</strong></td>
+            <td>
+                <span class="driver-name">${item.Driver.givenName} ${item.Driver.familyName}</span>
+                <span class="constructor-name">(${item.Constructors[0].name})</span>
+            </td>
+            <td style="text-align: right;"><strong>${item.points}</strong></td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function renderConstructorStandings() {
+    const tbody = document.getElementById('constructors-body');
+    tbody.innerHTML = '';
+
+    constructorStandingsCache.forEach(item => {
+        const row = document.createElement('tr');
+        let podiumClass = '';
+        if (item.position === '1') podiumClass = 'podium-1';
+        else if (item.position === '2') podiumClass = 'podium-2';
+        else if (item.position === '3') podiumClass = 'podium-3';
+
+        row.className = podiumClass;
+        row.innerHTML = `
+            <td><strong>${item.position}</strong></td>
+            <td><span class="driver-name">${item.Constructor.name}</span></td>
+            <td style="text-align: right;"><strong>${item.points}</strong></td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// Toggle between Drivers and Constructors view
+function switchStandingsType(type) {
+    const btnDrivers = document.getElementById('btn-drivers');
+    const btnConstructors = document.getElementById('btn-constructors');
+    const tableDrivers = document.getElementById('drivers-table');
+    const tableConstructors = document.getElementById('constructors-table');
+
+    if (type === 'drivers') {
+        btnDrivers.classList.add('active');
+        btnConstructors.classList.remove('active');
+        tableDrivers.style.display = 'table';
+        tableConstructors.style.display = 'none';
+        renderDriverStandings();
+    } else {
+        btnConstructors.classList.add('active');
+        btnDrivers.classList.remove('active');
+        tableConstructors.style.display = 'table';
+        tableDrivers.style.display = 'none';
+        renderConstructorStandings();
+    }
+}
+
+// 6. Theme Accent Switcher Logic
+document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const color = e.target.getAttribute('data-color');
+        document.documentElement.style.setProperty('--f1-red', color);
+    });
+});
+
+// Initialize App
 fetchNextRace();
-fetchStandings();
+fetchAllStandings();
