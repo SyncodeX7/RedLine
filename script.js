@@ -2,7 +2,7 @@ const JOLPICA_BASE = 'https://api.jolpi.ca/ergast/f1';
 let driverStandingsCache = [];
 let constructorStandingsCache = [];
 
-// 1. Fetch Schedule and Setup Countdown
+// 1. Fetch Schedule, Weekend Sessions, and Setup Countdown
 async function fetchNextRace() {
     try {
         const response = await fetch(`${JOLPICA_BASE}/current.json`);
@@ -17,9 +17,44 @@ async function fetchNextRace() {
         }
 
         if (nextRace) {
+            // Populate Countdown info
             document.getElementById('race-info').innerText = nextRace.raceName;
             document.getElementById('circuit-info').innerText = `${nextRace.Circuit.circuitName} — ${nextRace.Circuit.Location.locality}, ${nextRace.Circuit.Location.country}`;
             
+            // Populate Weekend Sessions info card
+            document.getElementById('weekend-race-title').innerText = nextRace.raceName;
+            document.getElementById('weekend-circuit').innerText = `${nextRace.Circuit.circuitName} (${nextRace.Circuit.Location.country})`;
+            
+            const scheduleContainer = document.getElementById('session-schedule');
+            scheduleContainer.innerHTML = '';
+            
+            const sessions = [
+                { name: 'Practice 1', date: nextRace.FirstPractice },
+                { name: 'Practice 2', date: nextRace.SecondPractice },
+                { name: 'Practice 3', date: nextRace.ThirdPractice },
+                { name: 'Qualifying', date: nextRace.Qualifying },
+                { name: 'Grand Prix', date: { date: nextRace.date, time: nextRace.time } }
+            ];
+
+            sessions.forEach(s => {
+                if (s.date && s.date.date) {
+                    const sessionDate = new Date(`${s.date.date}T${s.date.time || '00:00:00Z'}`);
+                    const options = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    const formattedDate = sessionDate.toLocaleDateString('en-US', options);
+
+                    const item = document.createElement('div');
+                    item.className = 'session-row';
+                    item.style.display = 'flex';
+                    item.style.justify = 'space-between';
+                    item.style.padding = '0.5rem 0';
+                    item.style.borderBottom = '1px solid var(--f1-border)';
+                    item.style.fontSize = '0.9rem';
+                    item.innerHTML = `<span style="color: var(--f1-gray);">${s.name}</span><strong style="color: var(--f1-text);">${formattedDate}</strong>`;
+                    scheduleContainer.appendChild(item);
+                }
+            });
+
+            // Countdown timer loop
             const raceDate = new Date(`${nextRace.date}T${nextRace.time || '14:00:00Z'}`).getTime();
             
             setInterval(() => {
