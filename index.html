@@ -14,7 +14,7 @@
     <header>
         <div class="logo">RED<span>LINE</span></div>
         <div class="header-meta">
-            <!-- Feature 6: Accent Color Switcher -->
+            <!-- Theme Accent Switcher -->
             <div class="theme-switcher">
                 <button class="theme-btn" data-color="#e10600" title="Ferrari Red"></button>
                 <button class="theme-btn" data-color="#ff8000" title="McLaren Orange"></button>
@@ -26,7 +26,7 @@
     </header>
 
     <div class="container">
-        <!-- Left Column: News Feed, Countdown, Circuit Map & History -->
+        <!-- Left Column -->
         <div class="column-left">
             <!-- Countdown Card -->
             <div class="card">
@@ -41,17 +41,16 @@
                 </div>
             </div>
 
-            <!-- Feature 1 & Graphical Track Representation -->
+            <!-- Circuit Map & Track Tracker -->
             <div class="card">
                 <h2>Interactive Circuit & Car Positions</h2>
                 <div class="circuit-container">
-                    <!-- SVG Track Layout Simulator -->
                     <svg class="track-svg" viewBox="0 0 500 250" xmlns="http://www.w3.org/2000/svg">
-                        <path class="track-line" d="M 60,125 C 60,40 180,30 250,50 C 320,70 440,50 440,125 C 440,200 320,210 250,190 C 180,170 60,210 60,125 Z" fill="none" stroke="#38384f" stroke-width="14" stroke-linecap="round"/>
-                        <!-- Car Position Dots along the track -->
-                        <circle id="car-1" class="track-car leader" cx="250" cy="50" r="6" title="P1 Leader" />
-                        <circle id="car-2" class="track-car challenger" cx="300" cy="65" r="5" title="P2 Challenger" />
-                        <circle id="car-3" class="track-car pack" cx="400" cy="140" r="4.5" title="Midfield Pack" />
+                        <path id="circuit-path" d="M 60,125 C 60,30 200,20 280,50 C 360,80 440,60 440,125 C 440,190 360,220 280,190 C 200,160 60,220 60,125 Z" fill="none" stroke="#2c2c3e" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+                        
+                        <circle class="track-car leader" r="6"><title>P1 Leader</title></circle>
+                        <circle class="track-car challenger" r="5.5"><title>P2 Challenger</title></circle>
+                        <circle class="track-car pack" r="4.5"><title>Midfield Pack</title></circle>
                     </svg>
                     <div class="circuit-stats-row">
                         <div><span>Length:</span> <strong id="track-length">5.412 km</strong></div>
@@ -61,7 +60,7 @@
                 </div>
             </div>
 
-            <!-- Feature 5: On This Day in F1 History -->
+            <!-- On This Day in F1 History -->
             <div class="card">
                 <h2>On This Day in F1 History (August 4)</h2>
                 <div class="history-content">
@@ -70,34 +69,22 @@
                     <div class="feed-desc">Secured his first-ever race win driving for the Mercedes AMG Petronas F1 Team, mastering high-temperature tire management across the Hungaroring layout.</div>
                 </div>
             </div>
-
-            <!-- Quick News & Paddock Rumors Feed -->
-            <div class="card">
-                <h2>Paddock Feed (TL;DR)</h2>
-                <div id="news-feed">
-                    <div class="feed-item">
-                        <span class="feed-tag">Simulation & Specs</span>
-                        <div class="feed-title">Active Aero Directives Under Scrutiny Ahead of Practice</div>
-                        <div class="feed-desc">FIA confirms strict telemetry monitoring protocols for upcoming development loops. Factory teams are adapting baseline simulation maps.</div>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <!-- Right Column: Standings with Feature 2 Toggle -->
+        <!-- Right Column: Standings Switcher -->
         <div class="column-right">
             <div class="card">
                 <div class="standings-header">
                     <h2>Standings</h2>
-                    <div class="standings-toggle">
-                        <button id="btn-drivers" class="toggle-btn active" onclick="switchStandingsType('drivers')">Drivers</button>
-                        <button id="btn-constructors" class="toggle-btn" onclick="switchStandingsType('constructors')">Teams</button>
+                    <div class="standings-switcher-pill">
+                        <div id="switcher-slider" class="switcher-slider"></div>
+                        <button id="btn-drivers" class="pill-btn active" onclick="switchStandingsType('drivers')">Drivers</button>
+                        <button id="btn-constructors" class="pill-btn" onclick="switchStandingsType('constructors')">Teams</button>
                     </div>
                 </div>
 
                 <div id="standings-loading" class="loading">Fetching current leaderboard...</div>
                 
-                <!-- Driver Standings Table -->
                 <div class="table-responsive">
                     <table id="drivers-table" style="display: none;">
                         <thead>
@@ -111,7 +98,6 @@
                     </table>
                 </div>
 
-                <!-- Constructor Standings Table -->
                 <div class="table-responsive">
                     <table id="constructors-table" style="display: none;">
                         <thead>
@@ -132,7 +118,6 @@
         <p>&copy; RedLine Dashboard. Powered by the Jolpica F1 API.</p>
     </footer>
 
-    <!-- Custom JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
