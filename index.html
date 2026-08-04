@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,12 +14,19 @@
     <header>
         <div class="logo">RED<span>LINE</span></div>
         <div class="header-meta">
+            <!-- Feature 6: Accent Color Switcher -->
+            <div class="theme-switcher">
+                <button class="theme-btn" data-color="#e10600" title="Ferrari Red"></button>
+                <button class="theme-btn" data-color="#ff8000" title="McLaren Orange"></button>
+                <button class="theme-btn" data-color="#00d2be" title="Mercedes Teal"></button>
+                <button class="theme-btn" data-color="#229954" title="Aston Green"></button>
+            </div>
             <div class="live-badge">Live</div>
         </div>
     </header>
 
     <div class="container">
-        <!-- Left Column: News Feed, Countdown & Circuit Stats -->
+        <!-- Left Column: News Feed, Countdown, Circuit Map & History -->
         <div class="column-left">
             <!-- Countdown Card -->
             <div class="card">
@@ -35,26 +41,33 @@
                 </div>
             </div>
 
-            <!-- NEW FEATURE: Circuit & Weather Quick Panel -->
+            <!-- Feature 1 & Graphical Track Representation -->
             <div class="card">
-                <h2>Circuit & Track Conditions</h2>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <span class="stat-label">Track Temp</span>
-                        <span class="stat-value" id="track-temp">32°C</span>
+                <h2>Interactive Circuit & Car Positions</h2>
+                <div class="circuit-container">
+                    <!-- SVG Track Layout Simulator -->
+                    <svg class="track-svg" viewBox="0 0 500 250" xmlns="http://www.w3.org/2000/svg">
+                        <path class="track-line" d="M 60,125 C 60,40 180,30 250,50 C 320,70 440,50 440,125 C 440,200 320,210 250,190 C 180,170 60,210 60,125 Z" fill="none" stroke="#38384f" stroke-width="14" stroke-linecap="round"/>
+                        <!-- Car Position Dots along the track -->
+                        <circle id="car-1" class="track-car leader" cx="250" cy="50" r="6" title="P1 Leader" />
+                        <circle id="car-2" class="track-car challenger" cx="300" cy="65" r="5" title="P2 Challenger" />
+                        <circle id="car-3" class="track-car pack" cx="400" cy="140" r="4.5" title="Midfield Pack" />
+                    </svg>
+                    <div class="circuit-stats-row">
+                        <div><span>Length:</span> <strong id="track-length">5.412 km</strong></div>
+                        <div><span>Laps:</span> <strong id="track-laps">53</strong></div>
+                        <div><span>DRS Zones:</span> <strong>2</strong></div>
                     </div>
-                    <div class="stat-box">
-                        <span class="stat-label">Air Temp</span>
-                        <span class="stat-value" id="air-temp">24°C</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-label">Humidity</span>
-                        <span class="stat-value" id="humidity">58%</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-label">Weather</span>
-                        <span class="stat-value" id="weather-cond">Clear / Dry</span>
-                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 5: On This Day in F1 History -->
+            <div class="card">
+                <h2>On This Day in F1 History (August 4)</h2>
+                <div class="history-content">
+                    <span class="feed-tag">August 4, 2013</span>
+                    <div class="feed-title">Lewis Hamilton’s Landmark Hungarian Grand Prix Victory</div>
+                    <div class="feed-desc">Secured his first-ever race win driving for the Mercedes AMG Petronas F1 Team, mastering high-temperature tire management across the Hungaroring layout.</div>
                 </div>
             </div>
 
@@ -67,22 +80,26 @@
                         <div class="feed-title">Active Aero Directives Under Scrutiny Ahead of Practice</div>
                         <div class="feed-desc">FIA confirms strict telemetry monitoring protocols for upcoming development loops. Factory teams are adapting baseline simulation maps.</div>
                     </div>
-                    <div class="feed-item">
-                        <span class="feed-tag">Strategy Insight</span>
-                        <div class="feed-title">Multi-Stop Matrix Projected Across High-Wear Zones</div>
-                        <div class="feed-desc">Thermal degradation profiles indicate aggressive delta shifts, pushing front-running strategies toward split multi-stop combinations.</div>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Right Column: Standings -->
+        <!-- Right Column: Standings with Feature 2 Toggle -->
         <div class="column-right">
             <div class="card">
-                <h2>Driver Standings</h2>
+                <div class="standings-header">
+                    <h2>Standings</h2>
+                    <div class="standings-toggle">
+                        <button id="btn-drivers" class="toggle-btn active" onclick="switchStandingsType('drivers')">Drivers</button>
+                        <button id="btn-constructors" class="toggle-btn" onclick="switchStandingsType('constructors')">Teams</button>
+                    </div>
+                </div>
+
                 <div id="standings-loading" class="loading">Fetching current leaderboard...</div>
+                
+                <!-- Driver Standings Table -->
                 <div class="table-responsive">
-                    <table id="standings-table" style="display: none;">
+                    <table id="drivers-table" style="display: none;">
                         <thead>
                             <tr>
                                 <th>Pos</th>
@@ -90,9 +107,21 @@
                                 <th style="text-align: right;">Pts</th>
                             </tr>
                         </thead>
-                        <tbody id="standings-body">
-                            <!-- JS will inject rows here -->
-                        </tbody>
+                        <tbody id="drivers-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- Constructor Standings Table -->
+                <div class="table-responsive">
+                    <table id="constructors-table" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Pos</th>
+                                <th>Constructor</th>
+                                <th style="text-align: right;">Pts</th>
+                            </tr>
+                        </thead>
+                        <tbody id="constructors-body"></tbody>
                     </table>
                 </div>
             </div>
