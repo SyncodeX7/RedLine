@@ -155,6 +155,20 @@ h2 {
     transition: border-left-color 0.3s ease;
 }
 
+/* Schedule List Spacing Fix */
+.session-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0.25rem;
+    border-bottom: 1px solid var(--f1-border);
+    font-size: 0.95rem;
+}
+
+.session-row:last-child {
+    border-bottom: none;
+}
+
 .countdown-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -199,69 +213,7 @@ h2 {
 .next-race-circuit {
     font-size: 0.85rem;
     color: var(--f1-gray);
-    margin-bottom: 1rem;
-}
-
-.circuit-container {
-    background: #111117;
-    border-radius: 8px;
-    border: 1px solid var(--f1-border);
-    padding: 1rem;
-    text-align: center;
-}
-
-.track-svg {
-    width: 100%;
-    max-height: 180px;
-}
-
-.track-car {
-    animation-duration: 9s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    filter: drop-shadow(0 0 6px rgba(255,255,255,0.6));
-}
-
-.track-car.leader { fill: #ffd700; animation-name: raceTrackAnim1; }
-.track-car.challenger { fill: var(--f1-red); animation-name: raceTrackAnim2; animation-delay: -3s; }
-.track-car.pack { fill: #00d2be; animation-name: raceTrackAnim3; animation-delay: -5.5s; }
-
-@keyframes raceTrackAnim1 {
-    0% { transform: translate(60px, 125px); }
-    25% { transform: translate(280px, 50px); }
-    50% { transform: translate(440px, 125px); }
-    75% { transform: translate(280px, 190px); }
-    100% { transform: translate(60px, 125px); }
-}
-
-@keyframes raceTrackAnim2 {
-    0% { transform: translate(120px, 100px); }
-    25% { transform: translate(330px, 45px); }
-    50% { transform: translate(400px, 150px); }
-    75% { transform: translate(220px, 180px); }
-    100% { transform: translate(120px, 100px); }
-}
-
-@keyframes raceTrackAnim3 {
-    0% { transform: translate(180px, 160px); }
-    25% { transform: translate(230px, 60px); }
-    50% { transform: translate(360px, 100px); }
-    75% { transform: translate(140px, 200px); }
-    100% { transform: translate(180px, 160px); }
-}
-
-.circuit-stats-row {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 1rem;
-    font-size: 0.85rem;
-    color: var(--f1-gray);
-    border-top: 1px solid var(--f1-border);
-    padding-top: 0.75rem;
-}
-
-.circuit-stats-row strong {
-    color: var(--f1-text);
+    margin-bottom: 1.25rem;
 }
 
 .standings-header {
