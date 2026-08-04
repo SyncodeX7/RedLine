@@ -28,19 +28,21 @@ async function fetchNextRace() {
             const scheduleContainer = document.getElementById('session-schedule');
             scheduleContainer.innerHTML = '';
             
-            const sessions = [
-                { name: 'Practice 1', date: nextRace.FirstPractice },
-                { name: 'Practice 2', date: nextRace.SecondPractice },
-                { name: 'Practice 3', date: nextRace.ThirdPractice },
-                { name: 'Qualifying', date: nextRace.Qualifying },
-                { name: 'Grand Prix', date: { date: nextRace.date, time: nextRace.time } }
-            ];
+            // Collect available sessions safely
+            const sessions = [];
+            if (nextRace.FirstPractice) sessions.push({ name: 'Practice 1', date: nextRace.FirstPractice });
+            if (nextRace.SecondPractice) sessions.push({ name: 'Practice 2', date: nextRace.SecondPractice });
+            if (nextRace.ThirdPractice) sessions.push({ name: 'Practice 3', date: nextRace.ThirdPractice });
+            if (nextRace.Sprint) sessions.push({ name: 'Sprint', date: nextRace.Sprint });
+            if (nextRace.Qualifying) sessions.push({ name: 'Qualifying', date: nextRace.Qualifying });
+            sessions.push({ name: 'Grand Prix', date: { date: nextRace.date, time: nextRace.time } });
 
             sessions.forEach(s => {
                 if (s.date && s.date.date) {
-                    const sessionDate = new Date(`${s.date.date}T${s.date.time || '00:00:00Z'}`);
+                    const timeStr = s.date.time || '00:00:00Z';
+                    const sessionDate = new Date(`${s.date.date}T${timeStr}`);
                     const options = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-                    const formattedDate = sessionDate.toLocaleDateString('en-US', options);
+                    const formattedDate = isNaN(sessionDate.getTime()) ? `${s.date.date}` : sessionDate.toLocaleDateString('en-US', options);
 
                     const item = document.createElement('div');
                     item.className = 'session-row';
@@ -53,6 +55,10 @@ async function fetchNextRace() {
                     scheduleContainer.appendChild(item);
                 }
             });
+
+            if (scheduleContainer.innerHTML === '') {
+                scheduleContainer.innerHTML = '<div style="color: var(--f1-gray); font-size: 0.9rem; padding: 0.5rem 0;">Schedule times unavailable</div>';
+            }
 
             // Countdown timer loop
             const raceDate = new Date(`${nextRace.date}T${nextRace.time || '14:00:00Z'}`).getTime();
@@ -72,7 +78,7 @@ async function fetchNextRace() {
         }
     } catch (error) {
         console.error("Error fetching schedule:", error);
-        document.getElementById('race-info').innerText = "Could not load schedule data.";
+        document.getElementById('weekend-race-title').innerText = "Could not load schedule data.";
     }
 }
 
