@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedLine | Live Quick-News & Standings</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,700;0,900;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --f1-red: #e10600;
+            --f1-dark: #15151e;
+            --f1-card-bg: #1f1f2b;
+            --f1-border: #38384f;
+            --f1-text: #ffffff;
+            --f1-gray: #94949b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Titillium Web', sans-serif;
+        }
+
+        body {
+            background-color: var--f1-dark;
+            color: var--f1-text;
+            line-height: 1.5;
+        }
+
+        /* Header / Navbar */
+        header {
+            background: linear-gradient(90deg, #0b0b10 0%, #1f1f2b 100%);
+            border-bottom: 4px solid var--f1-red;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-style: italic;
+            letter-spacing: 1px;
+            color: var--f1-text;
+        }
+
+        .logo span {
+            color: var--f1-red;
+        }
+
+        .live-badge {
+            background-color: var--f1-red;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 4px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Main Container Layout */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var--f1-card-bg;
+            border: 1px solid var--f1-border;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var--f1-red;
+            padding-left: 0.5rem;
+        }
+
+        /* Countdown Widget */
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .time-box {
+            background: #111116;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var--f1-border;
+        }
+
+        .time-box span {
+            display: block;
+        }
+
+        .time-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var--f1-red;
+        }
+
+        .time-label {
+            font-size: 0.75rem;
+            color: var--f1-gray;
+            text-transform: uppercase;
+        }
+
+        .next-race-title {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var--f1-gray;
+        }
+
+        /* Feed items (News/Quick Updates) */
+        .feed-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var--f1-border;
+        }
+
+        .feed-item:last-child {
+            border-bottom: none;
+        }
+
+        .feed-tag {
+            font-size: 0.75rem;
+            background: rgba(225, 6, 0, 0.2);
+            color: #ff4d4d;
+            padding: 0.1rem 0.5rem;
+            border-radius: 3px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .feed-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+
+        .feed-desc {
+            font-size: 0.9rem;
+            color: var--f1-gray;
+        }
+
+        /* Standings Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid var--f1-border;
+        }
+
+        th {
+            color: var--f1-gray;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+
+        tr:hover {
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        .loading {
+            color: var--f1-gray;
+            text-style: italic;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">F1<span>PULSE</span></div>
+        <div class="live-badge">API Connected</div>
+    </header>
+
+    <div class="container">
+        <!-- Left Column: News Feed & Countdown -->
+        <div>
+            <!-- Countdown Card -->
+            <div class="card">
+                <h2>Next Grand Prix Countdown</h2>
+                <div id="race-info" class="next-race-title">Loading next session...</div>
+                <div class="countdown-grid" style="margin-top: 1rem;">
+                    <div class="time-box"><span id="days" class="time-value">--</span><span class="time-label">Days</span></div>
+                    <div class="time-box"><span id="hours" class="time-value">--</span><span class="time-label">Hours</span></div>
+                    <div class="time-box"><span id="mins" class="time-value">--</span><span class="time-label">Mins</span></div>
+                    <div class="time-box"><span id="secs" class="time-value">--</span><span class="time-label">Secs</span></div>
+                </div>
+            </div>
+
+            <!-- Quick News & Paddock Rumors Feed -->
+            <div class="card">
+                <h2>Paddock Feed (TL;DR)</h2>
+                <div id="news-feed">
+                    <div class="feed-item">
+                        <span class="feed-tag">Breaking / Simulation</span>
+                        <div class="feed-title">New Regulations Teed Up For Upcoming Factory Wind Tunnels</div>
+                        <div class="feed-desc">FIA confirms strict protocol adjustments heading into the summer break cycle. Teams are already spinning up alternative aero concepts.</div>
+                    </div>
+                    <div class="feed-item">
+                        <span class="feed-tag">Strategy</span>
+                        <div class="feed-title">Medium-Hard Compound Expected To Dominate Strategy Lineups</div>
+                        <div class="feed-desc">Pirelli data indicates a high-degradation surface profile forcing majority two-stop matrix plans across front-running setups.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Standings -->
+        <div>
+            <div class="card">
+                <h2>Driver Standings</h2>
+                <div id="standings-loading" class="loading">Fetching current leaderboard...</div>
+                <table id="standings-table" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Driver</th>
+                            <th>Pts</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standings-body">
+                        <!-- JS will inject rows here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic to hit Jolpica API -->
+    <script>
+        const JOLPICA_BASE = 'https://api.jolpi.ca/ergast/f1';
+
+        // 1. Fetch Schedule and Setup Countdown
+        async function fetchNextRace() {
+            try {
+                const response = await fetch(`${JOLPICA_BASE}/current.json`);
+                const data = await response.json();
+                const races = data.MRData.RaceTable.Races;
+                
+                // Find the next upcoming race
+                const now = new Date();
+                let nextRace = races.find(r => new Date(`${r.date}T${r.time || '00:00:00Z'}`) > now);
+                
+                if (!nextRace) nextRace = races[races.id - 1]; // Fallback
+
+                if (nextRace) {
+                    document.getElementById('race-info').innerText = `${nextRace.raceName} (${nextRace.Circuit.circuitName})`;
+                    const raceDate = new Date(`${nextRace.date}T${nextRace.time || '14:00:00Z'}`).getTime();
+                    
+                    // Run countdown loop
+                    setInterval(() => {
+                        const timeLeft = raceDate - new Date().getTime();
+                        if (timeLeft > 0) {
+                            document.getElementById('days').innerText = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                            document.getElementById('hours').innerText = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            document.getElementById('mins').innerText = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                            document.getElementById('secs').innerText = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                        } else {
+                            document.getElementById('race-info').innerText = "SESSION LIVE OR COMPLETED";
+                        }
+                    }, 1000);
+                }
+            } catch (error) {
+                console.error("Error fetching schedule:", error);
+                document.getElementById('race-info').innerText = "Could not load race schedule.";
+            }
+        }
+
+        // 2. Fetch Driver Standings from Jolpica
+        async function fetchStandings() {
+            try {
+                const response = await fetch(`${JOLPICA_BASE}/current/driverstandings.json`);
+                const data = await response.json();
+                const standings = data.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+                
+                const tbody = document.getElementById('standings-body');
+                tbody.innerHTML = '';
+
+                standings.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${item.position}</strong></td>
+                        <td>${item.Driver.givenName} ${item.Driver.familyName} <span style="font-size:0.75rem; color:var(--f1-gray);">(${item.Constructors[0].name})</span></td>
+                        <td><strong>${item.points}</strong></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                document.getElementById('standings-loading').style.display = 'none';
+                document.getElementById('standings-table').style.display = 'table';
+            } catch (error) {
+                console.error("Error fetching standings:", error);
+                document.getElementById('standings-loading').innerText = "Failed to load standings.";
+            }
+        }
+
+        // Initialize App calls
+        fetchNextRace();
+        fetchStandings();
+    </script>
+</body>
+</html>
