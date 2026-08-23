@@ -1,10 +1,10 @@
-# 🏎️ RedLine (redxline)
+# 🏎️ RedLine (`redxline`)
 
 > Your ultimate TL;DR destination for breaking Formula 1 paddock news, live driver standings, and session countdowns without the heavy clutter.
 
 [![GitHub Pages](https://img.shields.io/badge/hosted%20on-GitHub%20Pages-brightgreen?style=flat-square&logo=github)](https://pages.github.com/)
 [![Formula 1](https://img.shields.io/badge/sport-Formula%201-red?style=flat-square&logo=formula1)](https://www.formula1.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](LICENSE)
 
 ---
 
@@ -38,4 +38,5 @@ redxline/
 ├── index.html        # Main landing page & dashboard interface
 ├── style.css         # Custom styling, variables, and responsive layout
 ├── script.js         # Core logic, timers, and data fetchers
+├── LICENSE           # GNU General Public License v3.0
 └── README.md         # Project documentation
