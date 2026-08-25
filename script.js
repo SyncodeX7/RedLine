@@ -2,13 +2,28 @@ const JOLPICA_BASE = 'https://api.jolpi.ca/ergast/f1';
 let driverStandingsCache = [];
 let constructorStandingsCache = [];
 
-// Dynamic F1 Historical Database Archive (On This Day Engine)
+// Comprehensive Dynamic F1 Historical Database Archive (On This Day Engine)
 const f1HistoryDatabase = {
-    "8-4": { date: "August 4, 2013", title: "Lewis Hamilton’s Landmark Hungarian GP Victory", desc: "Secured his first-ever race win driving for Mercedes AMG Petronas, mastering high-temperature tire management across the Hungaroring." },
-    "8-25": { date: "August 25, 2002", title: "Michael Schumacher's Historic 2002 Podium Record", desc: "Finished on the podium at every single race round of the 2002 season following a dominant tactical performance at Spa-Francorchamps." },
-    "8-26": { date: "August 26, 1991", title: "Michael Schumacher's F1 Debut at Spa", desc: "The legendary German driver made his Formula 1 debut with Jordan Grand Prix at the 1991 Belgian Grand Prix, instantly shocking the paddock in qualifying." },
-    // Fallback default for any missing day map
-    "default": { date: "F1 Archive Bulletin", title: "Decades of High-Speed Engineering & Racing Excellence", desc: "Formula 1 continues to innovate safety protocols, powertrain efficiency, and wheel-to-wheel racecraft across global circuits." }
+    "8-25": { 
+        date: "August 25, 2002", 
+        title: "Michael Schumacher's Historic 2002 Podium Record", 
+        desc: "Finished on the podium at every single race round of the 2002 season following a dominant tactical performance at Spa-Francorchamps." 
+    },
+    "8-26": { 
+        date: "August 26, 1991", 
+        title: "Michael Schumacher's F1 Debut at Spa-Francorchamps", 
+        desc: "The legendary German driver made his shocking Formula 1 Grand Prix debut with Jordan Grand Prix, qualifying an incredible 7th on the grid." 
+    },
+    "8-27": { 
+        date: "August 27, 1989", 
+        title: "Ayrton Senna's Dominant Belgian GP Pole & Win", 
+        desc: "McLaren's Ayrton Senna mastered changing weather conditions at Spa to secure a brilliant pole position and Sunday race victory." 
+    },
+    "default": { 
+        date: "F1 Archive Bulletin", 
+        title: "Decades of High-Speed Engineering & Racing Excellence", 
+        desc: "Formula 1 continues to innovate safety protocols, powertrain efficiency, and wheel-to-wheel racecraft across legendary global circuits." 
+    }
 };
 
 function loadDynamicHistory() {
@@ -43,7 +58,7 @@ async function fetchNextRace() {
             document.getElementById('weekend-race-title').innerText = nextRace.raceName;
             document.getElementById('weekend-circuit').innerText = `${nextRace.Circuit.circuitName} (${nextRace.Circuit.Location.country})`;
             
-            // Fetch live mock track conditions based on circuit locality
+            // Populate Track Weather Conditions with clear separation
             fetchTrackWeather(nextRace.Circuit.Location.locality);
 
             const scheduleContainer = document.getElementById('session-schedule');
@@ -93,14 +108,13 @@ async function fetchNextRace() {
     }
 }
 
-// Simulated Track Conditions Fetcher
+// Track Conditions Setter with distinct spacing
 async function fetchTrackWeather(city) {
     try {
-        // Using open-meteo generalized fallback telemetry simulation for track environment
-        document.getElementById('cond-weather').innerText = "Clear / Dry";
+        document.getElementById('cond-weather').innerText = "Clear & Dry";
         document.getElementById('cond-track-temp').innerText = "38°C";
         document.getElementById('cond-air-temp').innerText = "24°C";
-        document.getElementById('cond-compound').innerText = "Pirelli Medium (C3)";
+        document.getElementById('cond-compound').innerText = "Medium (C3)";
     } catch (e) {
         document.getElementById('cond-weather').innerText = "Unavailable";
     }
