@@ -2,41 +2,6 @@ const JOLPICA_BASE = 'https://api.jolpi.ca/ergast/f1';
 let driverStandingsCache = [];
 let constructorStandingsCache = [];
 
-// Comprehensive Dynamic F1 Historical Database Archive (On This Day Engine)
-const f1HistoryDatabase = {
-    "8-25": { 
-        date: "August 25, 2002", 
-        title: "Michael Schumacher's Historic 2002 Podium Record", 
-        desc: "Finished on the podium at every single race round of the 2002 season following a dominant tactical performance at Spa-Francorchamps." 
-    },
-    "8-26": { 
-        date: "August 26, 1991", 
-        title: "Michael Schumacher's F1 Debut at Spa-Francorchamps", 
-        desc: "The legendary German driver made his shocking Formula 1 Grand Prix debut with Jordan Grand Prix, qualifying an incredible 7th on the grid." 
-    },
-    "8-27": { 
-        date: "August 27, 1989", 
-        title: "Ayrton Senna's Dominant Belgian GP Pole & Win", 
-        desc: "McLaren's Ayrton Senna mastered changing weather conditions at Spa to secure a brilliant pole position and Sunday race victory." 
-    },
-    "default": { 
-        date: "F1 Archive Bulletin", 
-        title: "Decades of High-Speed Engineering & Racing Excellence", 
-        desc: "Formula 1 continues to innovate safety protocols, powertrain efficiency, and wheel-to-wheel racecraft across legendary global circuits." 
-    }
-};
-
-function loadDynamicHistory() {
-    const today = new Date();
-    const key = `${today.getMonth() + 1}-${today.getDate()}`;
-    const record = f1HistoryDatabase[key] || f1HistoryDatabase["default"];
-
-    document.getElementById('history-header').innerText = `On This Day in F1 History (${today.toLocaleString('default', { month: 'long' })} ${today.getDate()})`;
-    document.getElementById('history-date-tag').innerText = record.date;
-    document.getElementById('history-title').innerText = record.title;
-    document.getElementById('history-desc').innerText = record.desc;
-}
-
 // 1. Fetch Schedule, Weekend Sessions, Track Conditions & Setup Countdown
 async function fetchNextRace() {
     try {
