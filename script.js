@@ -111,10 +111,10 @@ async function fetchNextRace() {
 // Track Conditions Setter with distinct spacing
 async function fetchTrackWeather(city) {
     try {
-        document.getElementById('cond-weather').innerText = "Clear & Dry";
-        document.getElementById('cond-track-temp').innerText = "38°C";
-        document.getElementById('cond-air-temp').innerText = "24°C";
-        document.getElementById('cond-compound').innerText = "Medium (C3)";
+        document.getElementById('cond-weather').innerText = " Clear & Dry";
+        document.getElementById('cond-track-temp').innerText = " 38°C";
+        document.getElementById('cond-air-temp').innerText = " 24°C";
+        document.getElementById('cond-compound').innerText = " Medium (C3)";
     } catch (e) {
         document.getElementById('cond-weather').innerText = "Unavailable";
     }
