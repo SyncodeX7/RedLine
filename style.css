@@ -152,7 +152,58 @@ h2 {
     border-left: 4px solid var(--f1-red);
     padding-left: 0.75rem;
     color: var(--f1-text);
-    transition: border-left-color 0.3s ease;
+    transition: border-left-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Track Conditions Grid */
+.track-conditions-box {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    background: #111117;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--f1-border);
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.condition-item span {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--f1-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.condition-item strong {
+    font-size: 0.85rem;
+    color: var(--f1-text);
+}
+
+.sub-heading {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--f1-gray);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.video-highlight-wrapper {
+    margin-top: 1.25rem;
+}
+
+.video-highlight-wrapper iframe, .video-highlight-wrapper video {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--f1-border);
+    max-height: 220px;
+}
+
+@media (max-width: 768px) {
+    .track-conditions-box {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* Schedule List Spacing Fix */
