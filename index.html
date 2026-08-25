@@ -30,12 +30,26 @@
         <div class="column-left">
             <!-- Current / Upcoming Grand Prix Info Card -->
             <div class="card">
-                <h2>Grand Prix Weekend Schedule</h2>
+                <h2>Grand Prix Weekend Schedule & Conditions</h2>
                 <div id="weekend-race-title" class="next-race-title">Loading weekend details...</div>
                 <div id="weekend-circuit" class="next-race-circuit"></div>
                 
+                <!-- Track Conditions Widget -->
+                <div id="track-conditions" class="track-conditions-box">
+                    <div class="condition-item"><span>Weather</span><strong id="cond-weather">--</strong></div>
+                    <div class="condition-item"><span>Track Temp</span><strong id="cond-track-temp">--</strong></div>
+                    <div class="condition-item"><span>Air Temp</span><strong id="cond-air-temp">--</strong></div>
+                    <div class="condition-item"><span>Compound</span><strong id="cond-compound">--</strong></div>
+                </div>
+
                 <div class="session-schedule-grid" id="session-schedule">
                     <!-- Populated dynamically via script -->
+                </div>
+
+                <!-- Video Highlights Container -->
+                <div id="video-container" class="video-highlight-wrapper" style="display: none;">
+                    <h3 class="sub-heading">Latest Session Video</h3>
+                    <div id="video-frame-target"></div>
                 </div>
             </div>
 
@@ -52,13 +66,13 @@
                 </div>
             </div>
 
-            <!-- On This Day in F1 History -->
+            <!-- Dynamic On This Day in F1 History -->
             <div class="card">
-                <h2>On This Day in F1 History (August 4)</h2>
-                <div class="history-content">
-                    <span class="feed-tag">August 4, 2013</span>
-                    <div class="feed-title">Lewis Hamilton’s Landmark Hungarian Grand Prix Victory</div>
-                    <div class="feed-desc">Secured his first-ever race win driving for the Mercedes AMG Petronas F1 Team, mastering high-temperature tire management across the Hungaroring layout.</div>
+                <h2 id="history-header">On This Day in F1 History</h2>
+                <div class="history-content" id="history-content-box">
+                    <span class="feed-tag" id="history-date-tag">Loading...</span>
+                    <div class="feed-title" id="history-title">Fetching archive record...</div>
+                    <div class="feed-desc" id="history-desc">Please wait while we query historical database entries for today's date.</div>
                 </div>
             </div>
         </div>
@@ -107,7 +121,7 @@
     </div>
 
     <footer>
-        <p>&copy; RedLine Dashboard. Powered by the Jolpica F1 API.</p>
+        <p>&copy; RedLine Dashboard. Powered by Jolpica F1 API & Open-Meteo Weather Services.</p>
     </footer>
 
     <script src="script.js"></script>
